@@ -1,4 +1,5 @@
 import flatpickr from "flatpickr";
+import Notiflix from 'notiflix';
 import "flatpickr/dist/flatpickr.min.css";
 
 
@@ -15,7 +16,9 @@ const options = {
     onClose(selectedDates) {
       
         if (selectedDates[0] < Date.now()) {
-            window.alert('Please choose a date in the future')
+    
+           Notiflix.Notify.failure('Please choose a date in the future');
+
         } else {
         start.disabled = false;}
   },
@@ -31,7 +34,7 @@ start.addEventListener('click', onClick)
 
 function onClick() {
 
-    const startTime = options.selectedDates;
+    const startTime = new Date(options.selectedDates)
    
 
     const interval = setInterval(() => {
