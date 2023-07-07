@@ -20,13 +20,20 @@ function onStartClick() {
         const color = getRandomHexColor();
         refs.body.style.backgroundColor = color;
     }, INTERVAL)
-    refs.start.setAttribute('disabled', '');
-    refs.stop.disabled = false
+    buttonDisabled(refs.start);
+    buttonActive(refs.stop)
 }
 
 function onStopClick() {
     clearInterval(intervalId);
-    refs.stop.setAttribute('disabled', '')
-    refs.start.disabled = false
+    buttonDisabled(refs.stop)
+   buttonActive(refs.start)
 }
 
+function buttonDisabled(button) {
+    button.disabled = true
+}
+
+function buttonActive(button) {
+     button.disabled = false
+}

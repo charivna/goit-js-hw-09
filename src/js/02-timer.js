@@ -14,19 +14,19 @@ secEl: document.querySelector('.value[data-seconds]')
 }
 
 
-refs.start.disabled = true;
+ buttonDisabled(refs.start)
 
 const options = {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
-    onClose(selectedDates) {
+    onClose([selectedDates]) {
       
-        if (selectedDates[0] < Date.now()) {
+        if (selectedDates < Date.now()) {
     
            Notiflix.Notify.failure('Please choose a date in the future');
-
+          buttonDisabled(refs.start)
         } else {
         refs.start.disabled = false;}
   },
@@ -44,23 +44,35 @@ function onClick() {
    
 
     interval = setInterval(() => {
-        refs.start.disabled = true;
+
+        buttonDisabled(refs.start)
+        
         const currentTime = Date.now()
         const deltaTime = startTime - currentTime;
         const convertTime = convertMs(deltaTime);
         
         if (deltaTime <= 0) {
+            clearInterval(interval)
             return;
         }
-        refs.daysEl.textContent = convertTime.days;
-        refs.hoursEl.textContent = convertTime.hours;
-        refs.minEl.textContent = convertTime.minutes;
-        refs.secEl.textContent = convertTime.seconds
+        createTextEl(convertTime)
+        
     }, 1000)
    
 
 }
 
+function createTextEl(convertTime) {
+
+    refs.daysEl.textContent = convertTime.days;
+    refs.hoursEl.textContent = convertTime.hours;
+    refs.minEl.textContent = convertTime.minutes;
+    refs.secEl.textContent = convertTime.seconds
+}
+
+function buttonDisabled(button) {
+     button.disabled = true
+ }
 
 
 function addLeadingZero(value) {
@@ -89,6 +101,3 @@ function convertMs(ms) {
   return { days, hours, minutes, seconds };
 }
 
-// console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-// console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-// console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
